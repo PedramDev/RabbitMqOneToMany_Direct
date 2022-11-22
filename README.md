@@ -5,6 +5,6 @@ in another words, send message from one server to many servers **without message
 ![Direct Exchange](https://www.rabbitmq.com/img/tutorials/direct-exchange.png)
 
 
-Branch: **Master** => [Rabbitmq](https://www.rabbitmq.com/)
+Branch: **Main** => [Rabbitmq](https://www.rabbitmq.com/)
 
 Branch: **Abp.5.0.2** => [Rabbitmq](https://www.rabbitmq.com/) + [ABP Framework](https://abp.io/)
