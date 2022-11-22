@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Volo.Abp.DependencyInjection;
 
 namespace Consumer2
 {
-    public class RabbitServiceForOneToMany : RabbitQueueAbstractService, ISingletonDependency
+    public class RabbitServiceForOneToMany : RabbitQueueAbstractService
     {
+        public override string Exchange => CONSTS.exchangeProducer;
+
+        public override string RouteKey => CONSTS.routekey;
     }
 }

@@ -1,17 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Producer;
-using Shared;
-using Volo.Abp;
 
 internal sealed class Program
 {
     private static async Task Main()
     {
-        using var application = AbpApplicationFactory.Create<AppModule>(options =>
-        {
-            options.UseAutofac(); //Autofac integration
-        });
-        application.Initialize();
+        var application = AppModule.Initialize();
 
         Console.WriteLine("## Producer ##");
 
@@ -29,11 +23,11 @@ internal sealed class Program
                 switch (whichRabbit)
                 {
                     case "1":
-                        application.ServiceProvider.GetRequiredService<RabbitServiceForOneToOne>().Publish(message);
+                        application.GetRequiredService<RabbitServiceForOneToOne>().Publish(message);
                         break;
 
                     case "2":
-                        application.ServiceProvider.GetRequiredService<RabbitServiceForOneToMany>().Publish(message);
+                        application.GetRequiredService<RabbitServiceForOneToMany>().Publish(message);
                         break;
 
                     default:

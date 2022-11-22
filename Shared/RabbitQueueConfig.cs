@@ -9,6 +9,9 @@ namespace Shared
         public IConnection Connection { get; private set; }
         public IModel Model { get; private set; }
 
+        public abstract string Exchange { get;  }
+        public abstract string RouteKey { get;  }
+
         private void Init()
         {
             var factory = new ConnectionFactory() { HostName = "localhost" };
@@ -47,7 +50,7 @@ namespace Shared
         {
             Init();
 
-            Model.ExchangeDeclare(CONSTS.exchangeProducer, ExchangeType.Direct, true, false);
+            Model.ExchangeDeclare(exchange, ExchangeType.Direct, true, false);
 
             foreach (var queue in queueList)
             {
@@ -80,8 +83,8 @@ namespace Shared
             var prop = Model.CreateBasicProperties();
             prop.Persistent = true;
 
-            Model.BasicPublish(exchange: CONSTS.exchangeProducer,
-                                 routingKey: CONSTS.routekey,
+            Model.BasicPublish(exchange: Exchange,
+                                 routingKey: RouteKey,
                                  basicProperties: prop,
                                  body: body);
         }

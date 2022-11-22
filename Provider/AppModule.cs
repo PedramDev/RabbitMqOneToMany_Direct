@@ -1,27 +1,26 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Shared;
-using Volo.Abp;
-using Volo.Abp.Autofac;
-using Volo.Abp.Modularity;
 
 namespace Producer
 {
-    [DependsOn(typeof(AbpAutofacModule), typeof(ShareModule))]
-    public class AppModule : AbpModule
+    public class AppModule
     {
-        public override void ConfigureServices(ServiceConfigurationContext context)
+        public static ServiceProvider Initialize()
         {
-            context.Services.AddAssemblyOf<AppModule>();
-        }
+            var serviceProvider = new ServiceCollection()
+           .AddSingleton<RabbitServiceForOneToOne>()
+           .AddSingleton<RabbitServiceForOneToMany>()
+           .BuildServiceProvider();
 
-        public override void OnPostApplicationInitialization(ApplicationInitializationContext context)
-        {
-            var rabbitForOne = context.ServiceProvider.GetRequiredService<RabbitServiceForOneToOne>();
-            var rabbitForMany = context.ServiceProvider.GetRequiredService<RabbitServiceForOneToMany>();
+            var rabbitForOne = serviceProvider.GetRequiredService<RabbitServiceForOneToOne>();
+            var rabbitForMany = serviceProvider.GetRequiredService<RabbitServiceForOneToMany>();
 
             rabbitForMany.InitProducer(new string[] { CONSTS.queue1, CONSTS.queue2 }, CONSTS.exchangeProducer, CONSTS.routekey);
 
             rabbitForOne.InitProducer(CONSTS.queue3, CONSTS.exchangeProducer, CONSTS.routekeyOneToOne);
+
+
+            return serviceProvider;
         }
     }
 }

@@ -2,26 +2,21 @@
 using RabbitMQ.Client.Events;
 using Shared;
 using System.Text;
-using Volo.Abp;
-using Volo.Abp.Autofac;
-using Volo.Abp.Modularity;
 
 namespace Consumer2
 {
-    [DependsOn(typeof(AbpAutofacModule), typeof(ShareModule))]
-    public class AppModule : AbpModule
+    public class AppModule
     {
-        public override void ConfigureServices(ServiceConfigurationContext context)
+        public static ServiceProvider Initialize()
         {
-            context.Services.AddAssemblyOf<AppModule>();
-        }
+            var serviceProvider = new ServiceCollection()
+           .AddSingleton<RabbitServiceForOneToMany>()
+           .BuildServiceProvider();
 
-        public override void OnPostApplicationInitialization(ApplicationInitializationContext context)
-        {
 
             #region One To Many (queue1)
             {
-                var rabbitForMany = context.ServiceProvider.GetRequiredService<RabbitServiceForOneToMany>();
+                var rabbitForMany = serviceProvider.GetRequiredService<RabbitServiceForOneToMany>();
 
                 rabbitForMany.InitConsumer(CONSTS.queue2, CONSTS.exchangeProducer, CONSTS.routekey);
 
@@ -38,6 +33,8 @@ namespace Consumer2
             }
             #endregion
 
+
+            return serviceProvider;
         }
     }
 }
