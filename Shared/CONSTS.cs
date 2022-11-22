@@ -6,7 +6,7 @@
         public const string queue2 = "sam.q2";
 
         //one to one direct
-        public const string queue3 = "sam.q2";
+        public const string queue3 = "sam.q3";
 
         //one to one direct
         public const string routekeyOneToOne = "sam.onekey";

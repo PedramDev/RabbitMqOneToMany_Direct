@@ -39,11 +39,11 @@ namespace Consumer1
             #endregion
 
 
-            #region One To Many (queue3)
+            #region One To One (queue3)
             {
                 var rabbitForOne = context.ServiceProvider.GetRequiredService<RabbitServiceForOneToOne>();
 
-                rabbitForOne.InitConsumer(CONSTS.queue3, CONSTS.exchangeProducer, CONSTS.routekey);
+                rabbitForOne.InitConsumer(CONSTS.queue3, CONSTS.exchangeProducer, CONSTS.routekeyOneToOne);
 
                 EventHandler<BasicDeliverEventArgs> handler = (model, ea) =>
                 {
